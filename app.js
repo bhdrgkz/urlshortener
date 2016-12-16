@@ -23,6 +23,13 @@ app.get('/', function(req, res){
 app.post('/api/shorten', function(req, res){
   var longUrl = req.body.url;
   var shortUrl = '';
+  
+  var re = new RegExp("^(http|https)://", "i");
+  var match = re.test(longUrl);
+
+  if (match === false) {
+    longUrl = "http://"+longUrl;
+  }
 
   // check if url already exists in database
   Url.findOne({long_url: longUrl}, function (err, doc){
